@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #3c2d2d;">
+    <!-- Header -->
+    <h1 style="text-align: center; color: #ffffff; margin-top: 20px;">To-Do App</h1>
+
+    <div
+        style="max-width: 400px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+        <!-- Form to Add Task -->
+        <form method="POST" action="{% url 'todo' %}">
+            {% csrf_token %}
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <input type="text" id="todoInput" name="tasks" placeholder="Add a new task..."
+                    style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
+                <button type="submit"
+                    style="background-color: #0034de; color: #fff; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer;">Add</button>
+            </div>
+        </form>
+
+        <!-- List of Tasks -->
+        <ul id="todoList" style="list-style: none; padding: 0; margin: 0;">
+            {% for task in tasks %}
+            <li
+                style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #ddd;">
+                <span style="text-decoration: {% if task.completed %} line-through {% endif %}">{{ task.tasks }}</span>
+
+                <!-- Mark as Completed -->
+                <a href="{% url 'mark_completed' task.id %}"
+                    style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none; cursor: pointer;">
+                    {% if task.completed %} Unmark {% else %} Complete {% endif %}
+                </a>
+
+                <!-- Delete Task -->
+                <a href="{% url 'delete_task' task.id %}"
+                    style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none; cursor: pointer;">
+                    Delete
+                </a>
+            </li>
+            {% empty %}
+            <li>No tasks yet!</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>
